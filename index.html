@@ -1,8 +1,76 @@
 <html>
 <head>
   <style>
-    /* Scoreboard-Styling, z.B. */
-    .scoreboard-table { /* deine Tabelle */ }
+    /* Gesamtes Dokument: dunkler Verlauf, weiße Schrift */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #fff;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  /* #232526 und #414345 sind Grautöne – kannst du auch anders wählen */
+  min-height: 100vh;
+}
+
+/* Überschrift zentrieren, etwas größer machen */
+h1 {
+  text-align: center;
+  margin: 2rem 0 1rem;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+}
+
+/* Der Tabellen-Container: 
+   zentriert in der Mitte des Screens, begrenzt die Breite */
+#scoreboard {
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto 3rem; /* 3rem unten für etwas Abstand zum Seitenende */
+  border-collapse: collapse;
+}
+
+/* Kopfzeile: fetter Text, heller Hintergrund, spacing */
+#scoreboard tr:first-child {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+}
+
+/* Tabellenzellen-Design: padding, Rahmen unten, 
+   leichte Transparenz für abwechselnde Zeilenfarbe */
+#scoreboard tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#scoreboard td, 
+#scoreboard th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+}
+
+/* Abwechselnde Hintergrundfarbe für jede zweite Zeile */
+#scoreboard tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Score-Spalte optisch hervorheben */
+#scoreboard td:nth-child(3) {
+  font-weight: bold;
+  color: #f0d95b; /* Gold-Gelb als Beispiel */
+}
+
+/* Rank-Spalte zentriert (erste Spalte) */
+#scoreboard td:first-child {
+  text-align: center;
+  width: 50px;
+}
+
+/* Leichter Hover-Effekt auf den Tabellenzeilen 
+   (nur wenn du magst) */
+#scoreboard tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.2s ease-in;
+}
+
   </style>
 </head>
 <body>
