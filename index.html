@@ -1,0 +1,50 @@
+<html>
+<head>
+  <style>
+    /* Scoreboard-Styling, z.B. */
+    .scoreboard-table { /* deine Tabelle */ }
+  </style>
+</head>
+<body>
+  <h1>Scoreboard</h1>
+  <table id="scoreboard"></table>
+  
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/DEINEWEBAPPID/exec";
+
+    async function loadScores() {
+      try {
+        const response = await fetch(SCRIPT_URL);
+        const data = await response.json();  // data = Array
+        
+        // TABELLE leeren
+        const table = document.getElementById("scoreboard");
+        table.innerHTML = "";
+        
+        // Kopfzeile erstellen
+        let headerRow = document.createElement("tr");
+        headerRow.innerHTML = "<th>Rank</th><th>User</th><th>Score</th>";
+        table.appendChild(headerRow);
+
+        // Zeilen generieren
+        data.forEach((row, index) => {
+          let tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${index+1}</td>
+            <td>${row.user}</td>
+            <td>${row.score}</td>
+          `;
+          table.appendChild(tr);
+        });
+      } catch (e) {
+        console.error("Fehler beim Laden der Scores:", e);
+      }
+    }
+
+    // Beim Laden einmal ausführen
+    loadScores();
+    // Dann alle X Sekunden erneut laden
+    setInterval(loadScores, 5000); // z.B. alle 5 Sekunden
+  </script>
+</body>
+</html>
