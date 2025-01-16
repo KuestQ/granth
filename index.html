@@ -23,8 +23,7 @@ h1 {
 /* Der Tabellen-Container: 
    zentriert in der Mitte des Screens, begrenzt die Breite */
 #scoreboard {
-  width: 80%;
-  max-width: 900px;
+  width: 90%;
   margin: 0 auto 3rem; /* 3rem unten für etwas Abstand zum Seitenende */
   border-collapse: collapse;
 }
@@ -56,6 +55,7 @@ h1 {
 #scoreboard td:nth-child(3) {
   font-weight: bold;
   color: #f0d95b; /* Gold-Gelb als Beispiel */
+  font-size: 130%;
 }
 
 /* Rank-Spalte zentriert (erste Spalte) */
@@ -80,33 +80,45 @@ h1 {
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwsXjJLail2o9Qr7T3U4fgI1yCyr_mHW2aaW4C-yhLERXEgpSacQyBil2A5hwzNmnRWRw/exec";
     async function loadScores() {
-      try {
-        const response = await fetch(SCRIPT_URL);
-        const data = await response.json();  // data = Array
-        
-        // TABELLE leeren
-        const table = document.getElementById("scoreboard");
-        table.innerHTML = "";
-        
-        // Kopfzeile erstellen
-        let headerRow = document.createElement("tr");
-        headerRow.innerHTML = "<th>Rank</th><th>User</th><th>Score</th>";
-        table.appendChild(headerRow);
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const data = await response.json();  // data = Array von Objekten
+    
+    // HIER sortieren wir nach "score" absteigend (höchster Score zuerst)
+    data.sort((a, b) => {
+      // Falls score textbasiert ist, parse es in eine Zahl:
+      const scoreA = parseFloat(a.score) || 0;
+      const scoreB = parseFloat(b.score) || 0;
+      
+      // Absteigende Sortierung (höherer Score zuerst):
+      return scoreB - scoreA;
+    });
 
-        // Zeilen generieren
-        data.forEach((row, index) => {
-          let tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${index+1}</td>
-            <td>${row.user}</td>
-            <td>${row.score} Sekunden</td>
-          `;
-          table.appendChild(tr);
-        });
-      } catch (e) {
-        console.error("Fehler beim Laden der Scores:", e);
-      }
-    }
+    // Jetzt baust du die Tabelle
+    const table = document.getElementById("scoreboard");
+    table.innerHTML = "";
+
+    // Kopfzeile
+    let headerRow = document.createElement("tr");
+    headerRow.innerHTML = "<th>Rank</th><th>User</th><th>Score</th>";
+    table.appendChild(headerRow);
+
+    // Zeilen generieren
+    data.forEach((row, index) => {
+      let tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${row.user}</td>
+        <td>${row.score}</td>
+      `;
+      table.appendChild(tr);
+    });
+  } 
+  catch (e) {
+    console.error("Fehler beim Laden der Scores:", e);
+  }
+}
+
 
     // Beim Laden einmal ausführen
     loadScores();
